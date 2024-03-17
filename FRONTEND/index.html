@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Frontend de Recherche</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Chercheurs avec plus de 2 projets > 30k€</h2>
+    <div id="chercheursPlusDe2Projets"></div>
+    
+    <h2>Chercheurs avec M. VIEIRA en 2018</h2>
+    <div id="chercheursMemeProjetQueVieira"></div>
+    
+    <h2>Projets avec budget > budget 2018</h2>
+    <div id="projetsBudgetSup30k"></div>
+    
+    <h2>Projets de BOUGUEROUA » et « WOLSKA</h2>
+    <div id="projetsPourChercheursSpecifiques"></div>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchChercheursPlusDe2Projets();
+            fetchChercheursMemeProjetQueVieira();
+            fetchProjetsBudgetSup30k();
+            fetchProjetsPourChercheursSpecifiques();
+        });
+
+        function fetchChercheursPlusDe2Projets() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:8888/projet_api/RestChercheur/Chercheur.php?action=filtrerChercheurs', true);
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            const data = JSON.parse(xhr.responseText);
+            const container = document.getElementById('chercheursPlusDe2Projets');
+            data.forEach(item => {
+    container.innerHTML += `<p>${item.NOM} ${item.PRENOM}</p>`;
+});
+
+        } else {
+            console.error('Erreur:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function() {
+        console.error('Erreur de réseau');
+    };
+    xhr.send();
+}
+
+
+function fetchChercheursMemeProjetQueVieira() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:8888/projet_api/RestChercheur/chercheur.php?action=chercheursAvecVieira', true);
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            const data = JSON.parse(xhr.responseText);
+            const container = document.getElementById('chercheursMemeProjetQueVieira');
+            data.forEach(function(item) {
+                container.innerHTML += `<p>${item.NOM} ${item.PRENOM}</p>`; // Assurez-vous que les clés correspondent à celles de votre JSON
+            });
+        } else {
+            console.error('Erreur:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function() {
+        console.error('Erreur de réseau');
+    };
+    xhr.send();
+}
+
+
+
+
+
+function  fetchProjetsBudgetSup30k() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:8888/projet_api/RestChercheur/projets.php?action=budgetSuperieur2018', true);
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            const data = JSON.parse(xhr.responseText);
+            const container = document.getElementById('projetsBudgetSup30k');
+            data.forEach(function(item) {
+                container.innerHTML += `<p>${item.NOM}</p>`; 
+            });
+        } else {
+            console.error('Erreur:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function() {
+        console.error('Erreur de réseau');
+    };
+    xhr.send();
+}
+
+
+
+        function fetchProjetsPourChercheursSpecifiques() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:8888/projet_api/RestChercheur/projets.php?action=projetsPourChercheursSpecifiques', true);
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            const data = JSON.parse(xhr.responseText);
+            const container = document.getElementById('projetsPourChercheursSpecifiques');
+            data.forEach(item => {
+                container.innerHTML += `<p>Projet: ${item.NOM} - Budget: ${item.BUDGET}€</p>`;
+            });
+        } else {
+            console.error('Erreur:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function() {
+        console.error('Erreur de réseau');
+    };
+    xhr.send();
+}
+
+       
+    </script>
+</body>
+</html>
